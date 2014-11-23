@@ -1,0 +1,91 @@
+wang recipes $ git init
+	Initialized empty Git repository in /home/wang/version-control/recipes/.git/
+wang (master #) recipes $ git log
+	fatal: bad default revision 'HEAD'
+wang (master #) recipes $ git status
+	# On branch master
+	#
+	# Initial commit
+	#
+	# Untracked files:
+	#   (use "git add <file>..." to include in what will be committed)
+	#
+	#	cake-recipe.txt
+	#	chili-recipe.txt
+	#	frosting-recipe.txt
+	#
+	nothing added to commit but untracked files present (use "git add" to track)
+wang (master #) recipes $ git add cake-recipe.txt
+wang (master #) recipes $ git add frosting-recipe.txt
+wang (master #) recipes $ git status
+	# On branch master
+	#
+	# Initial commit
+	#
+	# Changes to be committed:
+	#   (use "git rm --cached <file>..." to unstage)
+	#
+	#	new file:   cake-recipe.txt
+	#	new file:   frosting-recipe.txt
+	#
+	# Untracked files:
+	#   (use "git add <file>..." to include in what will be committed)
+	#
+	#	chili-recipe.txt
+	#
+wang (master #) recipes $ git commit
+	[master (root-commit) c1c1906] Add cake and frosting
+	 2 files changed, 0 insertions(+), 0 deletions(-)
+	 create mode 100644 cake-recipe.txt
+	 create mode 100644 frosting-recipe.txt
+wang (master) recipes $ git log
+	commit c1c19064b865142d6abd666e8477cf67eaafa9b8
+	Author: Zhen <zhenw.wang@#gmail.com>
+	Date:   Fri Nov 21 22:01:42 2014 -0500
+
+	    Add cake and frosting
+wang (master) recipes $ git status
+	# On branch master
+	# Untracked files:
+	#   (use "git add <file>..." to include in what will be committed)
+	#
+	#	chili-recipe.txt
+	#
+	nothing added to commit but untracked files present (use "git add" to track)
+#create recipes on github
+wang (master) recipes $ git remote add origin https://github.com/tsly2015/recipes.git
+wang (master) recipes $ git remote
+	origin
+wang (master) recipes $ git remote -v
+	origin	https://github.com/tsly2015/recipes.git (fetch)
+	origin	https://github.com/tsly2015/recipes.git (push)
+wang (master) recipes $ git push origin master
+	Username for 'https://github.com': tsly2015
+	Password for 'https://tsly2015@github.com': 
+	Counting objects: 3, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (2/2), done.
+	Writing objects: 100% (3/3), 236 bytes | 0 bytes/s, done.
+	Total 3 (delta 0), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	 * [new branch]      master -> master
+wang (master) recipes $ git log --oneline
+	c1c1906 Add cake and frosting
+#Create the-third-recipe.txt on github
+#git push origin +master
+wang (master) recipes $ git pull origin master
+	remote: Counting objects: 3, done.
+	remote: Compressing objects: 100% (2/2), done.
+	remote: Total 3 (delta 0), reused 0 (delta 0)
+	Unpacking objects: 100% (3/3), done.
+	From https://github.com/tsly2015/recipes
+	 * branch            master     -> FETCH_HEAD
+	   c1c1906..aeff044  master     -> origin/master
+	Updating c1c1906..aeff044
+	Fast-forward
+	 the-third-recipe.txt | 1 +
+	 1 file changed, 1 insertion(+)
+	 create mode 100644 the-third-recipe.txt
+wang (master) recipes $ git log --oneline
+	aeff044 Add the third recipe
+	c1c1906 Add cake and frosting

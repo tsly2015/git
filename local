@@ -1,0 +1,274 @@
+wang version-control $ git clone https://github.com/udacity/asteroids
+	Cloning into 'asteroids'...
+	remote: Counting objects: 209, done.
+	remote: Total 209 (delta 0), reused 0 (delta 0)
+	Receiving objects: 100% (209/209), 182.20 KiB | 0 bytes/s, done.
+	Resolving deltas: 100% (129/129), done.
+	Checking connectivity... done.
+wang version-control $ cd asteroids
+wang (master) asteroids $ git log --oneline
+#git log --stat
+	3884eab Add color
+wang (master *) asteroids $ git diff
+	diff --git a/game.js b/game.js
+	index 49bf5ea..4853c69 100644
+	--- a/game.js
+	+++ b/game.js
+	@@ -421,6 +421,7 @@ Ship = function () {
+		 }
+		 if (KEY_STATUS.space) {
+		   if (this.delayBeforeBullet <= 0) {
+	+        this.delayBeforeBullet = 10;
+		     for (var i = 0; i < this.bullets.length; i++) {
+		       if (!this.bullets[i].visible) {
+		         SFX.laser();
+	diff --git a/index.html b/index.html
+	index 8aa618d..9a12802 100644
+	--- a/index.html
+	+++ b/index.html
+	@@ -1,4 +1,4 @@
+	-<html>
+	+       <html>
+	   <head>
+		 <script src="jquery-1.4.1.min.js"></script>
+		 <script src="vector_battle_regular.typeface.js"></script>
+wang (master *) asteroids $ git add game.js
+wang (master *+) asteroids $ git diff
+	diff --git a/index.html b/index.html
+	index 8aa618d..9a12802 100644
+	--- a/index.html
+	+++ b/index.html
+	@@ -1,4 +1,4 @@
+	-<html>
+	+       <html>
+	   <head>
+		 <script src="jquery-1.4.1.min.js"></script>
+		 <script src="vector_battle_regular.typeface.js"></script>
+wang (master *+) asteroids $ git diff --staged
+	diff --git a/game.js b/game.js
+	index 49bf5ea..4853c69 100644
+	--- a/game.js
+	+++ b/game.js
+	@@ -421,6 +421,7 @@ Ship = function () {
+		 }
+		 if (KEY_STATUS.space) {
+		   if (this.delayBeforeBullet <= 0) {
+	+        this.delayBeforeBullet = 10;
+		     for (var i = 0; i < this.bullets.length; i++) {
+		       if (!this.bullets[i].visible) {
+		         SFX.laser();
+wang (master *+) asteroids $ git status
+	# On branch master
+	# Your branch is up-to-date with 'origin/master'.
+	#
+	# Changes to be committed:
+	#   (use "git reset HEAD <file>..." to unstage)
+	#
+	#	modified:   game.js
+	#
+	# Changes not staged for commit:
+	#   (use "git add <file>..." to update what will be committed)
+	#   (use "git checkout -- <file>..." to discard changes in working directory)
+	#
+	#	modified:   index.html
+	#
+	# Untracked files:
+	#   (use "git add <file>..." to include in what will be committed)
+	#
+	#	game.js~
+	#	index.html~
+	#
+wang (master *+) asteroids $ git commit
+	[master 0257264] Add delay back to bullets
+	 1 file changed, 1 insertion(+)
+wang (master *) asteroids $ git diff
+	diff --git a/index.html b/index.html
+	index 8aa618d..9a12802 100644
+	--- a/index.html
+	+++ b/index.html
+	@@ -1,4 +1,4 @@
+	-<html>
+	+       <html>
+	   <head>
+		 <script src="jquery-1.4.1.min.js"></script>
+		 <script src="vector_battle_regular.typeface.js"></script>
+wang (master *) asteroids $ git reset --hard
+	HEAD is now at 0257264 Add delay back to bullets
+#git diff: working directory, staging area
+#git diff --stage: staging area, commit1(most recent)
+#git diff commit2 commit1: commit2, commit1
+#diff -u file1 file2
+wang (master) asteroids $ git branch
+	* master
+wang (master) asteroids $ git branch easy-mode
+wang (master) asteroids $ git checkout easy-mode
+#git checkout commitID
+#git checkout -b new_branch_name
+#git branch new_branch_name + git checkout new_branch_name
+	Switched to branch 'easy-mode'
+wang (easy-mode *) asteroids $ git diff
+	diff --git a/game.js b/game.js
+	index 743bfe0..750b04b 100644
+	--- a/game.js
+	+++ b/game.js
+	@@ -675,7 +675,7 @@ Asteroid = function () {
+	     this.scale /= 3;
+	     if (this.scale > 0.5) {
+	       // break into fragments
+	-      for (var i = 0; i < 3; i++) {
+	+      for (var i = 0; i < 2; i++) {
+	         var roid = $.extend(true, {}, this);
+	         roid.vel.x = Math.random() * 6 - 3;
+	         roid.vel.y = Math.random() * 6 - 3;
+wang (easy-mode *) asteroids $ git add game.js
+wang (easy-mode +) asteroids $ git commit
+	[easy-mode e738980] Make asteroids split into 2 smaller pieces instead of 3
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+wang (easy-mode) asteroids $ git checkout coins
+	Branch coins set up to track remote branch coins from origin.
+	Switched to a new branch 'coins'
+wang (coins) asteroids $ git log --oneline
+	354dfdd Make ships able to spawn on coins
+wang (coins) asteroids $ git checkout master
+	Switched to branch 'master'
+	Your branch is ahead of 'origin/master' by 1 commit.
+	  (use "git push" to publish your local commits)
+wang (master) asteroids $ git log --graph --oneline master coins
+	* db74072 Add delay back to commit
+	* 3884eab Add color
+	* 3e42136 now using requestAnimationFrame
+	* 4035769 frame interval was set wrong after game was paused
+	* 25ede83 a couple missing ends with the ipad version
+	* df03538 I can't spell 'screen' apparently :)
+	| * 354dfdd Make ships able to spawn on coins
+	| * 0c6daf1 Make it possible to collect coins
+	| * a3c0ae4 Create helper functions
+	| * 656b02e First pass at adding coins
+	|/  
+	* b0678b1 Revert controls
+	* f19cb1b Fix typo in space
+	* 75928a9 Use space for movement and enter for shooting
+wang (master) asteroids $ git show db74072                      
+	commit db74072f70ebdf6986fd672376d56e78f5ca28a4
+	Author: Zhen <zhenw.wang@gmail.com>
+	Date:   Sat Nov 22 11:42:54 2014 -0500
+
+		Add delay back to commit
+
+	diff --git a/game.js b/game.js
+	index 49bf5ea..4853c69 100644
+	--- a/game.js
+	+++ b/game.js
+	@@ -421,6 +421,7 @@ Ship = function () {
+		 }
+		 if (KEY_STATUS.space) {
+		   if (this.delayBeforeBullet <= 0) {
+	+        this.delayBeforeBullet = 10;
+		     for (var i = 0; i < this.bullets.length; i++) {
+		       if (!this.bullets[i].visible) {
+		         SFX.laser();
+wang (master) asteroids $ git merge master coins
+	Auto-merging game.js
+	Merge made by the 'recursive' strategy.
+	 game.js | 161 +++++++++++++++++++++++++++++++++++++++++++++-------------------
+	 1 file changed, 115 insertions(+), 46 deletions(-)
+	wang (master) asteroids $ git log --graph --oneline master coins
+	*   39e0264 Merge branch 'coins'
+	|\  
+	| * 354dfdd Make ships able to spawn on coins
+	| * 0c6daf1 Make it possible to collect coins
+	| * a3c0ae4 Create helper functions
+	| * 656b02e First pass at adding coins
+	* | db74072 Add delay back to commit
+	* | 3884eab Add color
+	* | 3e42136 now using requestAnimationFrame
+	* | 4035769 frame interval was set wrong after game was paused
+	* | 25ede83 a couple missing ends with the ipad version
+	* | df03538 I can't spell 'screen' apparently :)
+	|/  
+	* b0678b1 Revert controls
+	* f19cb1b Fix typo in space
+	* 75928a9 Use space for movement and enter for shooting             
+wang (master) asteroids $ git branch -d coins
+	Deleted branch coins (was 354dfdd).
+wang (master) asteroids $ git merge master easy-mode
+	Auto-merging game.js
+	CONFLICT (content): Merge conflict in game.js
+	Automatic merge failed; fix conflicts and then commit the result.
+wang (master *+|MERGING) asteroids $ git diff
+	diff --cc game.js
+	index 58511a3,0577164..0000000
+	--- a/game.js
+	+++ b/game.js
+	@@@ -708,7 -674,18 +708,35 @@@ Asteroid = function () 
+	      if (other.name == "bullet") Game.score += 120 / this.scale;
+	      this.scale /= 3;
+	      if (this.scale > 0.5) {
+	++<<<<<<< HEAD
+	 +      this.breakIntoFragments();
+	++||||||| merged common ancestors
+	++      // break into fragments
+	++      for (var i = 0; i < 3; i++) {
+	++        var roid = $.extend(true, {}, this);
+	++        roid.vel.x = Math.random() * 6 - 3;
+	++        roid.vel.y = Math.random() * 6 - 3;
+	++        if (Math.random() > 0.5) {
+	++          roid.points.reverse();
+	++        }
+	++        roid.vel.rot = Math.random() * 2 - 1;
+	++        roid.move(roid.scale * 3); // give them a little push
+	++        Game.sprites.push(roid);
+	++      }
+	++=======
+	+       // break into fragments
+	+       for (var i = 0; i < 2; i++) {
+	+         var roid = $.extend(true, {}, this);
+	+         roid.vel.x = Math.random() * 6 - 3;
+	+         roid.vel.y = Math.random() * 6 - 3;
+	+         if (Math.random() > 0.5) {
+	+           roid.points.reverse();
+	+         }
+	+         roid.vel.rot = Math.random() * 2 - 1;
+	+         roid.move(roid.scale * 3); // give them a little push
+	+         Game.sprites.push(roid);
+	+       }
+	++>>>>>>> easy-mode
+	      }
+	      Game.explosionAt(other.x, other.y);
+	      this.die();
+wang (master *+|MERGING) asteroids $ git add game.js
+wang (master +|MERGING) asteroids $ git commit
+	[master 0dbc118] Merge branch 'easy-mode'
+wang (master) asteroids $ git log --graph --oneline
+	*   0dbc118 Merge branch 'easy-mode'
+	|\  
+	| * 35d10bd Make asteroids split into 2 smaller pieces instead of 3
+	* |   39e0264 Merge branch 'coins'
+	|\ \  
+	| |/  
+	|/|   
+	| * 354dfdd Make ships able to spawn on coins
+	| * 0c6daf1 Make it possible to collect coins
+	| * a3c0ae4 Create helper functions
+	| * 656b02e First pass at adding coins
+	* | db74072 Add delay back to commit
+	* | 3884eab Add color
+	* | 3e42136 now using requestAnimationFrame
+	* | 4035769 frame interval was set wrong after game was paused
+	* | 25ede83 a couple missing ends with the ipad version
+	* | df03538 I can't spell 'screen' apparently :)
+	|/  
+	* b0678b1 Revert controls
+	* f19cb1b Fix typo in space
+	* 75928a9 Use space for movement and enter for shooting
+<<<<<<<
+	current version
+|||||||
+	original
+=======
+	version to be included
+>>>>>>>
+wang (master) asteroids $ git log -n 1 --oneline
+	0dbc118 Merge branch 'easy-mode'
+
+

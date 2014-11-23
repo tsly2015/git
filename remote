@@ -1,0 +1,377 @@
+fork from https://github.com/LarryMad/recipes
+wang version-control $ git clone https://github.com/tsly2015/recipes.git
+	Cloning into 'recipes'...
+	remote: Counting objects: 13, done.
+	remote: Total 13 (delta 0), reused 0 (delta 0)
+	Unpacking objects: 100% (13/13), done.
+	Checking connectivity... done.
+wang version-control $ cd recipes
+wang (master) recipes $ git log --oneline
+	a6a2f99 Add a chili recipe
+	b361250 Add a cake and frosting recipe
+	2050b37 Add content to README
+	267c56d Initial commit
+wang (master) recipes $ git diff         
+	diff --git a/chili-recipe.txt b/chili-recipe.txt
+	index 1169154..009bd5f 100644
+	--- a/chili-recipe.txt
+	+++ b/chili-recipe.txt
+	@@ -7,13 +7,14 @@ Ingredients:
+	  - 1 teaspoon ground oregano
+	  - 1 teaspoon salt
+	  - 1/4 teaspoon cayenne pepper
+	+ - 1/4 teaspoon onion powder
+	  - 1/4 cup corn flour
+	  - One 15-ounce can kidney beans, drained and rinsed
+	  - One 15-ounce can pinto beans, drained and rinsed
+	 
+	 Directions:
+	  1. Brown the ground beef in a large bot and drain off the excess fat.
+	- 2. Add the tomato sauce, chili powder, cumin, oregano, salt, and cayenne.
+	+ 2. Add the tomato sauce, chili powder, cumin, oregano, salt, cayenne and onion powder.
+	  3. Stir, then cover and simmer over low heat for one hour.
+	  4. Mix the corn flour and 1/2 cup water in a small bowl.  Add to chili.
+	  5. Add the beans and simmer for 10 more minutes.
+wang (master *) recipes $ git add chili-recipe.txt
+wang (master +) recipes $ git commit
+	[master 931c4bf] Add onion powder to the recipe
+	 1 file changed, 2 insertions(+), 1 deletion(-)
+#simulate a commit from Sarah on github
+wang (master) recipes $ bash ../utils/sarah/sarah_changes.sh https://github.com/tsly2015/recipes.git
+	Cloning into 'recipes'...
+	remote: Counting objects: 13, done.
+	remote: Total 13 (delta 0), reused 0 (delta 0)
+	Unpacking objects: 100% (13/13), done.
+	Checking connectivity... done.
+	[master e101e8e] Remove cumin from chili
+	 1 file changed, 1 insertion(+), 2 deletions(-)
+	Counting objects: 3, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (3/3), 306 bytes | 0 bytes/s, done.
+	Total 3 (delta 2), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	   a6a2f99..e101e8e  master -> master
+wang (master) recipes $ git branch -a
+	* master
+	  remotes/origin/HEAD -> origin/master
+	  remotes/origin/master
+wang (master) recipes $ git log origin/master --oneline
+	a6a2f99 Add a chili recipe
+	b361250 Add a cake and frosting recipe
+	2050b37 Add content to README
+	267c56d Initial commit
+wang (master) recipes $ git fetch
+	remote: Counting objects: 3, done.
+	remote: Compressing objects: 100% (3/3), done.
+	remote: Total 3 (delta 0), reused 1 (delta 0)
+	Unpacking objects: 100% (3/3), done.
+	From https://github.com/tsly2015/recipes
+	   a6a2f99..e101e8e  master     -> origin/master
+wang (master) recipes $ git log origin/master --oneline
+	e101e8e Remove cumin from chili
+	a6a2f99 Add a chili recipe
+	b361250 Add a cake and frosting recipe
+	2050b37 Add content to README
+	267c56d Initial commit
+wang (master) recipes $ git merge master origin/master
+	Auto-merging chili-recipe.txt
+	CONFLICT (content): Merge conflict in chili-recipe.txt
+	Automatic merge failed; fix conflicts and then commit the result.
+wang (master *+|MERGING) recipes $ git diff
+	diff --cc chili-recipe.txt
+	index 009bd5f,c42469e..0000000
+	--- a/chili-recipe.txt
+	+++ b/chili-recipe.txt
+	@@@ -14,7 -12,7 +13,13 @@@ Ingredients
+	  
+	  Directions:
+	   1. Brown the ground beef in a large bot and drain off the excess fat.
+	++<<<<<<< HEAD
+	 + 2. Add the tomato sauce, chili powder, cumin, oregano, salt, cayenne and onion powder.
+	++||||||| merged common ancestors
+	++ 2. Add the tomato sauce, chili powder, cumin, oregano, salt, and cayenne.
+	++=======
+	+  2. Add the tomato sauce, chili powder, oregano, salt, and cayenne.
+	++>>>>>>> origin/master
+	   3. Stir, then cover and simmer over low heat for one hour.
+	   4. Mix the corn flour and 1/2 cup water in a small bowl.  Add to chili.
+	   5. Add the beans and simmer for 10 more minutes.
+wang (master *+|MERGING) recipes $ git add chili-recipe.txt
+wang (master +|MERGING) recipes $ git commit
+	[master 2e72a5b] Merge remote-tracking branch 'origin/master'
+wang (master) recipes $ git log --graph --oneline
+	*   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (master) recipes $ git pull origin master #same thing
+	From https://github.com/tsly2015/recipes
+	 * branch            master     -> FETCH_HEAD
+	Already up-to-date.
+#git pull master = git fetch [remote_name] + git merge master origin/master
+wang (master) recipes $ git branch different-oil
+wang (master) recipes $ git checkout different-oil
+	Switched to branch 'different-oil'
+wang (different-oil *) recipes $ git diff
+	diff --git a/cake-recipe.txt b/cake-recipe.txt
+	index a00d11c..ba64812 100644
+	--- a/cake-recipe.txt
+	+++ b/cake-recipe.txt
+	@@ -7,7 +7,7 @@ Ingredients:
+	  - 1 teaspoon salt
+	  - 2 eggs
+	  - 1 cup milk
+	- - 1/2 cup vegetable oil
+	+ - 1/2 cup canols oil
+	  - 2 teaspoons vanilla extract
+	  - 1 cup boiling water
+wang (different-oil *) recipes $ git add cake-recipe.txt
+wang (different-oil +) recipes $ git commit
+	[different-oil f9e849a] Use canola oil instead of vegetable oil
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+wang (different-oil) recipes $ git log --graph --oneline
+	* f9e849a Use canola oil instead of vegetable oil
+	*   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (different-oil) recipes $ git push origin different-oil
+	Counting objects: 9, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (9/9), done.
+	Writing objects: 100% (9/9), 985 bytes | 0 bytes/s, done.
+	Total 9 (delta 5), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	 * [new branch]      different-oil -> different-oil
+#Create a pull request and change basic fork to tsly2015/recipes
+wang (different-oil *) recipes $ git diff
+diff --git a/cake-recipe.txt b/cake-recipe.txt
+index ba64812..835f47f 100644
+--- a/cake-recipe.txt
++++ b/cake-recipe.txt
+@@ -7,7 +7,7 @@ Ingredients:
+  - 1 teaspoon salt
+  - 2 eggs
+  - 1 cup milk
+- - 1/2 cup canols oil
++ - 1/2 cup canola oil
+  - 2 teaspoons vanilla extract
+  - 1 cup boiling water
+wang (different-oil *) recipes $ git add cake-recipe.txt
+wang (different-oil +) recipes $ git commit
+	[different-oil 7efdfdc] Fix typo in canola
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+wang (different-oil) recipes $ git push origin different-oil
+	Counting objects: 3, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (3/3), 292 bytes | 0 bytes/s, done.
+	Total 3 (delta 2), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	   f9e849a..7efdfdc  different-oil -> different-oil
+wang (different-oil) recipes $ git log --graph --oneline
+	* 7efdfdc Fix typo in canola
+	* f9e849a Use canola oil instead of vegetable oil
+	*   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (different-oil) recipes $ git checkout master
+	Switched to branch 'master'
+	Your branch is ahead of 'origin/master' by 2 commits.
+	  (use "git push" to publish your local commits)
+wang (master) recipes $ git log --graph --oneline
+	*   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+#simulate 2nd commit from Sarah on github
+wang (master) recipes $ bash ../utils/sarah/sarah_changes_2.sh https://github.com/tsly2015/recipes.git
+	Cloning into 'recipes'...
+	remote: Counting objects: 28, done.
+	remote: Compressing objects: 100% (20/20), done.
+	remote: Total 28 (delta 10), reused 17 (delta 5)
+	Unpacking objects: 100% (28/28), done.
+	Checking connectivity... done.
+	[master d3a5edd] Merge pull request from more-oil
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+	Counting objects: 3, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (3/3), done.
+	Writing objects: 100% (3/3), 340 bytes | 0 bytes/s, done.
+	Total 3 (delta 2), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	   e101e8e..d3a5edd  master -> master
+wang (master) recipes $ git pull origin master
+	remote: Counting objects: 3, done.
+	remote: Compressing objects: 100% (2/2), done.
+	remote: Total 3 (delta 2), reused 2 (delta 1)
+	Unpacking objects: 100% (3/3), done.
+	From https://github.com/tsly2015/recipes
+	 * branch            master     -> FETCH_HEAD
+	   e101e8e..d3a5edd  master     -> origin/master
+	Merge made by the 'recursive' strategy.
+	 cake-recipe.txt | 2 +-
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+wang (master) recipes $ git log --graph --oneline
+	*   8cb2d60 Merge branch 'master' of https://github.com/tsly2015/recipes
+	|\  
+	| * d3a5edd Merge pull request from more-oil
+	* |   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\ \  
+	| |/  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (master) recipes $ git checkout different-oil
+	Switched to branch 'different-oil'
+wang (different-oil) recipes $ git merge master different-oil
+	Auto-merging cake-recipe.txt
+	CONFLICT (content): Merge conflict in cake-recipe.txt
+	Automatic merge failed; fix conflicts and then commit the result.
+wang (different-oil *+|MERGING) recipes $ git diff
+	diff --cc cake-recipe.txt
+	index 835f47f,373136d..0000000
+	--- a/cake-recipe.txt
+	+++ b/cake-recipe.txt
+	@@@ -7,7 -7,7 +7,13 @@@ Ingredients
+	   - 1 teaspoon salt
+	   - 2 eggs
+	   - 1 cup milk
+	++<<<<<<< HEAD
+	 + - 1/2 cup canola oil
+	++||||||| merged common ancestors
+	++ - 1/2 cup vegetable oil
+	++=======
+	+  - 3/4 cup vegetable oil
+	++>>>>>>> master
+	   - 2 teaspoons vanilla extract
+	   - 1 cup boiling water
+wang (different-oil *+|MERGING) recipes $ git diff
+	diff --cc cake-recipe.txt
+	index 835f47f,373136d..0000000
+	--- a/cake-recipe.txt
+	+++ b/cake-recipe.txt
+	@@@ -7,7 -7,7 +7,7 @@@ Ingredients
+	   - 1 teaspoon salt
+	   - 2 eggs
+	   - 1 cup milk
+	-  - 1/2 cup canola oil
+	 - - 3/4 cup vegetable oil
+	++ - 3/4 cup canola oil
+	   - 2 teaspoons vanilla extract
+	   - 1 cup boiling water
+wang (different-oil *+|MERGING) recipes $ git add cake-recipe.txt
+wang (different-oil +|MERGING) recipes $ git commit
+	[different-oil 9268892] Merge branch 'master' into different-oil
+wang (different-oil) recipes $ git log --graph --oneline
+	*   9268892 Merge branch 'master' into different-oil
+	|\  
+	| *   8cb2d60 Merge branch 'master' of https://github.com/tsly2015/recipes
+	| |\  
+	| | * d3a5edd Merge pull request from more-oil
+	* | | 7efdfdc Fix typo in canola
+	* | | f9e849a Use canola oil instead of vegetable oil
+	|/ /  
+	* |   2e72a5b Merge remote-tracking branch 'origin/master'
+	|\ \  
+	| |/  
+	| * e101e8e Remove cumin from chili
+	* | 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (different-oil) recipes $ git push origin different-oil
+	Counting objects: 5, done.
+	Delta compression using up to 8 threads.
+	Compressing objects: 100% (5/5), done.
+	Writing objects: 100% (5/5), 643 bytes | 0 bytes/s, done.
+	Total 5 (delta 3), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	   7efdfdc..9268892  different-oil -> different-oil
+#Accept the pull request
+wang (different-oil) recipes $ git checkout master
+	Switched to branch 'master'
+	Your branch is ahead of 'origin/master' by 3 commits.
+	  (use "git push" to publish your local commits)
+wang (master) recipes $ git pull origin master
+	remote: Counting objects: 1, done.
+	remote: Total 1 (delta 0), reused 1 (delta 0)
+	Unpacking objects: 100% (1/1), done.
+	From https://github.com/tsly2015/recipes
+	 * branch            master     -> FETCH_HEAD
+	   d3a5edd..b3e37d7  master     -> origin/master
+	Updating 8cb2d60..b3e37d7
+	Fast-forward
+	 cake-recipe.txt | 2 +-
+	 1 file changed, 1 insertion(+), 1 deletion(-)
+wang (master) recipes $ git log --graph --oneline
+	*   b3e37d7 Merge pull request #1 from tsly2015/different-oil
+	|\  
+	| *   9268892 Merge branch 'master' into different-oil
+	| |\  
+	| | *   8cb2d60 Merge branch 'master' of https://github.com/tsly2015/recipes
+	| | |\  
+	| |_|/  
+	|/| |   
+	* | | d3a5edd Merge pull request from more-oil
+	| * | 7efdfdc Fix typo in canola
+	| * | f9e849a Use canola oil instead of vegetable oil
+	| |/  
+	| *   2e72a5b Merge remote-tracking branch 'origin/master'
+	| |\  
+	| |/  
+	|/|   
+	* | e101e8e Remove cumin from chili
+	| * 931c4bf Add onion powder to the recipe
+	|/  
+	* a6a2f99 Add a chili recipe
+	* b361250 Add a cake and frosting recipe
+	* 2050b37 Add content to README
+	* 267c56d Initial commit
+wang (master) recipes $ git log -n 1
+	commit b3e37d77b0d11d1eb75757713a893e2fbb8d30c8
+	Merge: d3a5edd 9268892
+	Author: tsly2015 <tsly2015@users.noreply.github.com>
+	Date:   Sat Nov 22 21:25:12 2014 -0500
+
+		Merge pull request #1 from tsly2015/different-oil
+		
+		Different oil
+wang (master) recipes $ git branch new
+wang (master) recipes $ git checkout new
+	Switched to branch 'new'
+wang (new) recipes $ git push origin new
+	Total 0 (delta 0), reused 0 (delta 0)
+	To https://github.com/tsly2015/recipes.git
+	 * [new branch]      new -> new
+wang (new) recipes $ git push origin --delete new
+	To https://github.com/tsly2015/recipes.git
+	 - [deleted]         new
